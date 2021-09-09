@@ -91,16 +91,24 @@ class NotesHandler {
 
   async putNoteByIdHandler(request, h) {
     try {
-      await this._validator.validateNotePayload(request.payload);
+      this._validator.validateNotePayload(request.payload);
 
       const { id } = request.params;
-
-      this._service.editNoteById(id, request.payload);
-
+      await this._service.editNoteById(id, request.payload);
       return {
         status: 'success',
         message: 'Catatan berhasil diperbarui',
       };
+      // const note = await this._service.editNoteById(id, request.payload);
+      // const response = h.response({
+      //   status: 'success',
+      //   message: 'Catatan berhasil diperbaharui',
+      //   data: {
+      //     note,
+      //   },
+      // });
+      // response.code(200);
+      // return response;
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
